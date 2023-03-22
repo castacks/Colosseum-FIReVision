@@ -28,6 +28,7 @@ namespace airlib
             Infrared,
             OpticalFlow,
             OpticalFlowVis,
+            FireVisionThermal,
             Count //must be last
         };
 
