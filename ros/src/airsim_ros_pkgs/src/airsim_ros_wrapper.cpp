@@ -22,7 +22,8 @@ const std::unordered_map<int, std::string> AirsimROSWrapper::image_type_int_to_s
     { 4, "DisparityNormalized" },
     { 5, "Segmentation" },
     { 6, "SurfaceNormals" },
-    { 7, "Infrared" }
+    { 7, "Infrared" },
+    { 10, "FireVisionThermal"}
 };
 
 AirsimROSWrapper::AirsimROSWrapper(const ros::NodeHandle& nh, const ros::NodeHandle& nh_private, const std::string& host_ip)
@@ -212,7 +213,9 @@ void AirsimROSWrapper::create_ros_pubs_from_settings_json()
                     if (curr_image_type == ImageType::Scene ||
                         curr_image_type == ImageType::Segmentation ||
                         curr_image_type == ImageType::SurfaceNormals ||
-                        curr_image_type == ImageType::Infrared) {
+                        curr_image_type == ImageType::Infrared ||
+                        curr_image_type == ImageType::FireVisionThermal
+                        ) {
                         current_image_request_vec.push_back(ImageRequest(curr_camera_name, curr_image_type, false, false));
                     }
                     // if {DepthPlanar, DepthPerspective,DepthVis, DisparityNormalized}, get float image
