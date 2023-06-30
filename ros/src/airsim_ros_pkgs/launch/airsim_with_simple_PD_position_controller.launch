@@ -1,4 +1,7 @@
+<!-- modified by Andrew Jong 04.01.2023 to add robot_name arg -->
 <launch> 
+    <!-- ===== ARGUMENTS ===== -->
+    <arg name="robot_name" default="drone_1"/>
 
 <!-- AirSim ROS Wrapper -->
 	<include file="$(find airsim_ros_pkgs)/launch/airsim_node.launch"/>
@@ -7,5 +10,5 @@
 <!-- Simple PID Position Controller -->
 	<include file="$(find airsim_ros_pkgs)/launch/position_controller_simple.launch"/>
 
-	<param name="vehicle_name" value="drone_1"/>
+	<param name="vehicle_name" value="$(arg robot_name)"/>
 </launch>
