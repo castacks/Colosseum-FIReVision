@@ -149,6 +149,35 @@ void MultirotorPawnSimApi::setKinematics(const Kinematics::State& state, bool ig
     pending_pose_status_ = PendingPoseStatus::RenderPending;
 }
 
+std::string MultirotorPawnSimApi::getRecordFileLine(bool is_header_line) const
+{
+    std::string common_line = PawnSimApi::getRecordFileLine(is_header_line);
+    if (is_header_line) {
+        return common_line +
+               "Latitude\tLongitude\tAltitude\tPressure\tq_x\tq_y\tq_z\tq_w\tang_vel_x\tang_vel_y\tang_vel_z\tlin_acc_x\tlin_acc_y\tlin_acc_z\t";
+    }
+
+    const auto& state = vehicle_api_->getMultirotorState();
+    const auto& bar_data = vehicle_api_->getBarometerData("");
+    const auto& imu_data = vehicle_api_->getImuData("");
+
+    std::ostringstream ss;
+    ss << common_line;
+    ss << state.gps_location.latitude << "\t" << state.gps_location.longitude << "\t"
+       << state.gps_location.altitude << "\t";
+
+    ss << bar_data.pressure << "\t";
+
+    ss << imu_data.orientation.x() << "\t" << imu_data.orientation.y() << "\t"
+       << imu_data.orientation.z() << "\t" << imu_data.orientation.w() << "\t";
+    ss << imu_data.angular_velocity.x() << "\t" << imu_data.angular_velocity.y() << "\t"
+       << imu_data.angular_velocity.z() << "\t";
+    ss << imu_data.linear_acceleration.x() << "\t" << imu_data.linear_acceleration.y() << "\t"
+       << imu_data.linear_acceleration.z() << "\t";
+
+    return ss.str();
+}
+
 //*** Start: UpdatableState implementation ***//
 void MultirotorPawnSimApi::resetImplementation()
 {
